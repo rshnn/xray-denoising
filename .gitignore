@@ -1,0 +1,5 @@
+.ipynb_checkpoints
+data/xrays/
+data/dataset64/ 
+__pycache__
+data/
