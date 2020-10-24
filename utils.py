@@ -105,7 +105,7 @@ def parse_function(filename):
     img_normed = img_decoded / 255
 
     fn_split = tf.strings.split(filename, '/')
-    orig_filename = fn_split[0] + "/dataset128/" + fn_split[2]
+    orig_filename = fn_split[0] + "/dataset64/" + fn_split[2]
 
     out_img_string = tf.io.read_file(orig_filename) 
     out_img_decoded = tf.image.decode_png(out_img_string)  
