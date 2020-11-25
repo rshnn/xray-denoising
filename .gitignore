@@ -3,5 +3,5 @@ data/xrays/
 data/dataset64/ 
 __pycache__
 data/
-saved_models/2020-11-21/model4-latent-1kepochs/images
+saved_models/
 temp_training_images/
