@@ -130,6 +130,44 @@ def create_dataset(filenames, SHUFFLE_BUFFER_SIZE,
     return dataset
 
 
+def parse_function_128(filename): 
+    """ Returns tuple.  (input, output) 
+    
+    Input is corrupted image.   
+    Output is uncorrupted image.  Same filename. Diff folder. 
+    """
+
+    img_string = tf.io.read_file(filename) 
+    img_decoded = tf.image.decode_png(img_string)  
+    img_normed = img_decoded / 255
+
+    fn_split = tf.strings.split(filename, '/')
+    orig_filename = fn_split[0] + "/dataset128/" + fn_split[2]
+
+    out_img_string = tf.io.read_file(orig_filename) 
+    out_img_decoded = tf.image.decode_png(out_img_string)  
+    out_img_normed = out_img_decoded / 255
+
+    return img_normed, out_img_normed
+
+
+
+
+def create_dataset_128(filenames, SHUFFLE_BUFFER_SIZE, 
+                  AUTOTUNE, BATCH_SIZE): 
+    """ Init a tf.Dataset 
+    """   
+    
+    dataset = tf.data.Dataset.from_tensor_slices((filenames))
+    dataset = dataset.map(parse_function_128, num_parallel_calls=AUTOTUNE)
+    
+    dataset = dataset.batch(BATCH_SIZE)
+    dataset = dataset.prefetch(buffer_size=AUTOTUNE)
+    
+    return dataset
+
+
+
 
 def get_filenames_list(input_directory): 
 

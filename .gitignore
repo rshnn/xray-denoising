@@ -3,5 +3,6 @@ data/xrays/
 data/dataset64/ 
 __pycache__
 data/
+saved_model/
 saved_models/
 temp_training_images/
