@@ -2,10 +2,12 @@
 
 Exploration of various neural network architectures that perform image denoising.  
 
+## Summary  
+This data comes from a [kaggle dataset](https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia).  It contains chest x-ray images of individuals with and without pneumonia.    
 
-![cover](images/cover.png)
+The best performing model was a residual autoencoder neural network.  It has symmetric skip-forward connections between convolution layers of the same feature tensor shape.  An example of the denoising performance of this model is shown below on a test-set image.  
 
-This data comes from a [kaggle dataset](https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia).  It contains chest x-ray images of individuals with and without pneumonia.   
+![6](images/06.png)
 
 
 ## Background 
@@ -63,19 +65,31 @@ The last layer of the encoder is:
 
 Additional sampling functions are created to complete the connection between the encoder and decoder.  The sampling has no effect on backprop.  
 
-Below is a gif that shows generated images using randomly sampled numbers passed through the sampler and then the decoder at various epochs during training.  The result is an image that somewhat shows how well the model has 'understood' the domain or captured the true latent features.  
+Below is a gif that shows generated images using randomly sampled numbers passed through the sampler and then the decoder at various epochs during training.  The result is an image that somewhat shows how well the model has 'understood' the domain or captured the true latent features.  This is not useful for denoising, just a fun graphic.  
 
 ![vae_gif](images/150epchs-cvae.gif)  
 
 
-The VAE produces more smoothed images than the autoencoder.  
+The VAE produces more smoothed images than the autoencoder.  The performance appears to be similar to that of the regular autoencoder.  
 ![vae-compare](images/test-sample-vae.png)  
 
 
 
-## Autoencoder with skip-connections 
+## Autoencoder with skip-connections (residual network)  
 
+An autoencoder architecture with skip-forward connections was implemented using the tf.keras API. The skip-forward connections allow for better behavior during model training for very deep networks.  Essentially, the activation of a particular layer is shortcutted further down the network.  In this case, we implemented an identify residual skip-forward connection.  If necessary, the residual block is able to learn the identity function and this helps stabalize training for large networks.  This is of particular interest for our image denoising problem because we want to balance between having the network learn the complex meta-model of chest x-ray images (complex network architecture) but also possibly minimally adjust the values of certain pixels that experienced less noise (skip-connections).  
 
+Random sampling was used to determine a good set of hyperparameters.  The model was trained on a dataset corrupted by medium-level Gaussian noise. The performance of this model on a test set image is shown below. Overall, the denoising is much more successful than previous iterations.  E.g. the rib cage is better denoised. 
+
+![6](images/06.png)
+
+Below that is the performance of this model on different corruption types.  The top two rows are the images with corruption.  The bottom two rows of each figure are the denoised images corresponding to the corrupted image 2 rows above.   
+
+![0](images/00.png)
+![1](images/01.png)
+![2](images/02.png)
+![3](images/04.png)
+![4](images/05.png)
 
 
 ## References
@@ -83,6 +97,3 @@ The VAE produces more smoothed images than the autoencoder.
 + https://arxiv.org/pdf/1603.09056.pdf
 + https://github.com/flyywh/Image-Denoising-State-of-the-art
 + https://arxiv.org/pdf/1803.01314.pdf  
-
-
-
