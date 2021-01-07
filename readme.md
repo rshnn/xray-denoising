@@ -5,7 +5,7 @@ Exploration of various neural network architectures that perform image denoising
 ## Summary  
 This data comes from a [kaggle dataset](https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia).  It contains chest x-ray images of individuals with and without pneumonia.    
 
-The best performing model was a residual autoencoder neural network.  It has symmetric skip-forward connections between convolution layers of the same feature tensor shape.  An example of the denoising performance of this model is shown below on a test-set image.  
+The best performing model was a residual autoencoder neural network.  It has symmetric skip-forward connections between convolution layers of the same feature tensor shape.  Hyperparameter tuning for this neural network architecture was conducted using random search.  An example of the denoising performance of this model is shown below on a test-set image.  
 
 ![6](images/06.png)
 
